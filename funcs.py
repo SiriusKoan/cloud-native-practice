@@ -1,3 +1,5 @@
+from collections import Counter
+
 class HarryPotter:
     def __init__(self):
         self.discount = {
@@ -11,11 +13,19 @@ class HarryPotter:
 
     def getPrice(self, books: list):
         total = 0;
+        length = []
         while len(books):
             s = set(books)
-            discount = self.discount[len(s)]
-            total += len(s) * 8 * discount
             for e in s:
                 books.remove(e)
+            length.append(len(s))
+        sizes = Counter(length)
+        while sizes.get(3) and sizes.get(5):
+            sizes[3] -= 1
+            sizes[5] -= 1
+            sizes[4] += 2
+        for k in sizes.keys():
+            total += 8 * k * self.discount[k] * sizes[k]
+
         return total
 
